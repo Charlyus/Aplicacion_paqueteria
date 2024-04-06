@@ -1,0 +1,245 @@
+mapeo fisico
+
+CREATE TABLE Administrador (
+    ->     Id_administrador INT AUTO_INCREMENT PRIMARY KEY,
+    ->     nombre VARCHAR(255) NOT NULL,
+    ->     contrasena VARCHAR(255) NOT NULL
+    -> );
+CREATE TABLE Administrador (
+    ->     Id_administrador INT AUTO_INCREMENT PRIMARY KEY,
+    ->     nombre VARCHAR(255) NOT NULL,
+    ->     contrasena VARCHAR(255) NOT NULL
+    -> );
+CREATE TABLE Cliente (
+    ->     nit INT PRIMARY KEY,
+    ->     nombre VARCHAR(255) NOT NULL,
+    ->     direccion VARCHAR(255) NOT NULL
+    -> );
+CREATE TABLE Factura (
+    ->     id_factura INT AUTO_INCREMENT PRIMARY KEY,
+    ->     nit_cliente INT,
+    ->     total DECIMAL(10, 2),
+    ->     fecha DATE,
+    ->     costo DECIMAL(10, 2),
+    ->     FOREIGN KEY (nit_cliente) REFERENCES Cliente(nit)
+    -> );
+CREATE TABLE Ruta (
+    ->     id_ruta INT AUTO_INCREMENT PRIMARY KEY,
+    ->     nombre VARCHAR(255),
+    ->     cantPuntosControl INT,
+    ->     activo BOOLEAN
+    -> );
+CREATE TABLE Paquete (
+    ->     id_paquete INT AUTO_INCREMENT PRIMARY KEY,
+    ->     id_ruta INT,
+    ->     nit_cliente INT,
+    ->     tarifaDeOperacion DECIMAL(10, 2),
+    ->     enDestino BOOLEAN,
+    ->     recolectado BOOLEAN,
+    ->     subtotal DECIMAL(10, 2),
+    ->     horas INT,
+    ->     costo DECIMAL(10, 2),
+    ->     FOREIGN KEY (id_ruta) REFERENCES Ruta(id_ruta),
+    ->     FOREIGN KEY (nit_cliente) REFERENCES Cliente(nit)
+    -> );
+    CREATE TABLE Recepcionista (
+    ->     id_recepcionista INT AUTO_INCREMENT PRIMARY KEY,
+    ->     activo BOOLEAN,
+    ->     nombre VARCHAR(255),
+    ->     contrasena VARCHAR(255)
+    -> );
+CREATE TABLE Operador (
+    ->     id_operador INT AUTO_INCREMENT PRIMARY KEY,
+    ->     activo BOOLEAN,
+    ->     nombre VARCHAR(255),
+    ->     contrasena VARCHAR(255)
+    -> );
+CREATE TABLE PuntoDeControl (
+    ->     id_punto_control INT AUTO_INCREMENT PRIMARY KEY,
+    ->     id_recepcionista INT,
+    ->     id_operador INT,
+    ->     cantidadCola INT,
+    ->     cuotaDestino DECIMAL(10, 2),
+    ->     FOREIGN KEY (id_recepcionista) REFERENCES Recepcionista(id_recepcionista),
+    ->     FOREIGN KEY (id_operador) REFERENCES Operador(id_operador),
+    ->     UNIQUE (id_recepcionista) -- Restricción UNIQUE para garantizar que un recepcionista solo pueda ser asignado a un punto de control
+    -> );
+CREATE TABLE RutaPuntoControl (
+    ->     id_ruta INT,
+    ->     id_punto_control INT,
+    ->     orden INT,  -- Este es el nuevo atributo para indicar el orden en la secuencia
+    ->     FOREIGN KEY (id_ruta) REFERENCES Ruta(id_ruta),
+    ->     FOREIGN KEY (id_punto_control) REFERENCES PuntoControl(id_punto_control),
+    ->     PRIMARY KEY (id_ruta, id_punto_control)
+    -> );
+CREATE TABLE RutaPuntoControl (
+    ->     id_ruta INT,
+    ->     id_punto_control INT,
+    ->     orden INT,  -- Este es el nuevo atributo para indicar el orden en la secuencia
+    ->     FOREIGN KEY (id_ruta) REFERENCES Ruta(id_ruta),
+    ->     FOREIGN KEY (id_punto_control) REFERENCES PuntoControl(id_punto_control),
+    ->     PRIMARY KEY (id_ruta, id_punto_control)
+    -> };
+CREATE TABLE RutaPuntoControl (
+	   Descripcion VARCHAR(255),		
+    ->     id_ruta INT,
+    ->     id_punto_control INT,
+    ->     orden INT,  -- Este es el nuevo atributo para indicar el orden en la secuencia
+    ->     FOREIGN KEY (id_ruta) REFERENCES Ruta(id_ruta),
+    ->     FOREIGN KEY (id_punto_control) REFERENCES PuntoDeControl(id_punto_control),
+    ->     PRIMARY KEY (id_ruta, id_punto_control)
+    -> );
+CREATE TABLE SeguimientoPaquete (
+    ->     id_paquete INT,
+    ->     id_ruta INT,
+    ->     id_punto_control INT,
+    ->     FOREIGN KEY (id_paquete) REFERENCES Paquete(id_paquete),
+    ->     FOREIGN KEY (id_ruta) REFERENCES Ruta(id_ruta),
+    ->     FOREIGN KEY (id_punto_control) REFERENCES PuntoControl(id_punto_control),
+    ->     PRIMARY KEY (id_paquete, id_ruta, id_punto_control)
+    -> );
+CREATE TABLE SeguimientoPaquete (
+    ->     id_paquete INT,
+    ->     id_ruta INT,
+    ->     id_punto_control INT,
+    ->     FOREIGN KEY (id_paquete) REFERENCES Paquete(id_paquete),
+    ->     FOREIGN KEY (id_ruta) REFERENCES Ruta(id_ruta),
+    ->     FOREIGN KEY (id_punto_control) REFERENCES PuntoDeControl(id_punto_control),
+    ->     PRIMARY KEY (id_paquete, id_ruta, id_punto_control)
+    -> );
+ALTER TABLE Paquete
+ADD libras INT;
+ALTER TABLE Paquete
+    -> MODIFY libras DECIMAL(10,2);
+ALTER TABLE Paquete
+    -> ADD cuotaDestino DECIMAL(10,2);
+ALTER TABLE Paquete MODIFY horas DECIMAL(10,2);
+INSERT INTO Administrador (nombre, contrasena) VALUES('Admin1', 'contraseña1'),('Admin2', 'contraseña2'),('Admin3', 'contraseña3');
+INSERT INTO Recepcionista (activo, nombre, contrasena) VALUES (TRUE, 'Recepcionista1', 'contraseña1');
+INSERT INTO Recepcionista (activo, nombre, contrasena) VALUES (TRUE, 'Recepcionista2', 'contraseña2');
+INSERT INTO Recepcionista (activo, nombre, contrasena) VALUES (TRUE, 'Recepcionista3', 'contraseña3');
+INSERT INTO Operador (activo, nombre, contrasena) VALUES (TRUE, 'Operador1', 'contraseña1');
+INSERT INTO Operador (activo, nombre, contrasena) VALUES (TRUE, 'Operador2', 'contraseña2');
+INSERT INTO Operador (activo, nombre, contrasena) VALUES (TRUE, 'Operador3', 'contraseña3');
+INSERT INTO PuntoDeControl (id_recepcionista, id_operador, cantidadCola, cuotaDestino) VALUES (1, 1, 20,30);
+INSERT INTO PuntoDeControl (id_recepcionista, id_operador, cantidadCola, cuotaDestino) VALUES (2, 1, 20,30);
+INSERT INTO PuntoDeControl (id_recepcionista, id_operador, cantidadCola, cuotaDestino) VALUES (3, 2, 20,30);
+INSERT INTO Recepcionista (activo, nombre, contrasena) VALUES (TRUE, 'Recepcionista4', 'contraseña4');
+INSERT INTO PuntoDeControl (id_recepcionista, id_operador, cantidadCola, cuotaDestino) VALUES (4, 3, 20,30);
+UPDATE PuntoDeControl SET Descripcion = 'xela' WHERE id_punto_control = 1;
+UPDATE PuntoDeControl SET Descripcion = 'guatemala' WHERE id_punto_control = 2;
+UPDATE PuntoDeControl SET Descripcion = 'san Marcos' WHERE id_punto_control = 3;
+UPDATE PuntoDeControl SET Descripcion = 'totonicapan' WHERE id_punto_control = 3;
+UPDATE PuntoDeControl SET Descripcion = 'totonicapan' WHERE id_punto_control =3;
+UPDATE PuntoDeControl SET Descripcion = 'solola' WHERE id_punto_control = 5;
+UPDATE PuntoDeControl SET Descripcion = 'guatemala' WHERE id_punto_control = 6;
+INSERT INTO Ruta (nombre, cantPuntosControl, activo) VALUES ("xela-Guate", 2, TRUE);
+INSERT INTO Ruta (nombre, cantPuntosControl, activo) VALUES ("xela-solola", 3, TRUE);
+INSERT INTO Ruta (nombre, cantPuntosControl, activo) VALUES ("totonicapan-guate", 3, TRUE);
+INSERT INTO Ruta (nombre, cantPuntosControl, activo) VALUES ("totonicapan-solola", 2, TRUE);
+INSERT INTO Ruta (nombre, cantPuntosControl, activo) VALUES ("solola-guate", 2, TRUE);
+INSERT INTO RutaPuntoControl (id_ruta, id_punto_control, orden) VALUES (1, 1, 1);
+INSERT INTO RutaPuntoControl (id_ruta, id_punto_control, orden) VALUES (1, 6, 2);
+INSERT INTO RutaPuntoControl (id_ruta, id_punto_control, orden) VALUES (2, 1, 1);
+INSERT INTO RutaPuntoControl (id_ruta, id_punto_control, orden) VALUES (2, 3, 2);
+INSERT INTO RutaPuntoControl (id_ruta, id_punto_control, orden) VALUES (2, 5, 3);
+INSERT INTO RutaPuntoControl (id_ruta, id_punto_control, orden) VALUES (3, 3, 1);
+INSERT INTO RutaPuntoControl (id_ruta, id_punto_control, orden) VALUES (3, 5, 2);
+INSERT INTO RutaPuntoControl (id_ruta, id_punto_control, orden) VALUES (3, 6, 3);
+INSERT INTO RutaPuntoControl (id_ruta, id_punto_control, orden) VALUES (4, 3, 1);
+INSERT INTO RutaPuntoControl (id_ruta, id_punto_control, orden) VALUES (4, 5, 2);
+INSERT INTO RutaPuntoControl (id_ruta, id_punto_control, orden) VALUES (5, 5, 1);
+INSERT INTO RutaPuntoControl (id_ruta, id_punto_control, orden) VALUES (5, 6, 2);
+INSERT INTO Paquete (id_ruta, nit_cliente, tarifaDeOperacion, enDestino, recolectado, libras, cuotaDestino, horas, subtotal) VALUES (5, 2222,20, FALSE, FALSE, 7, 30, 0, 37);
+INSERT INTO Paquete (id_ruta, nit_cliente, tarifaDeOperacion, enDestino, recolectado, libras, cuotaDestino, horas, subtotal) VALUES (5, 2222,20, FALSE, FALSE, 7, 30, 0, 37);
+INSERT INTO Paquete (id_ruta, nit_cliente, tarifaDeOperacion, enDestino, recolectado, libras, cuotaDestino, horas, subtotal) VALUES (5, 2222,20, FALSE, FALSE, 7, 30, 0, 37);
+INSERT INTO Paquete (id_ruta, nit_cliente, tarifaDeOperacion, enDestino, recolectado, libras, cuotaDestino, horas, subtotal) VALUES (1, 3333,20, FALSE, FALSE, 5, 30, 0, 35);
+INSERT INTO Paquete (id_ruta, nit_cliente, tarifaDeOperacion, enDestino, recolectado, libras, cuotaDestino, horas, subtotal) VALUES (1, 3333,20, FALSE, FALSE, 5, 30, 0, 35);
+INSERT INTO Paquete (id_ruta, nit_cliente, tarifaDeOperacion, enDestino, recolectado, libras, cuotaDestino, horas, subtotal) VALUES (1, 3333,20, FALSE, FALSE, 5, 30, 0, 35);
+INSERT INTO Paquete (id_ruta, nit_cliente, tarifaDeOperacion, enDestino, recolectado, libras, cuotaDestino, horas, subtotal) VALUES (4, 4444,20, FALSE, FALSE, 10, 30, 0, 40);
+INSERT INTO Paquete (id_ruta, nit_cliente, tarifaDeOperacion, enDestino, recolectado, libras, cuotaDestino, horas, subtotal) VALUES (4, 4444,20, FALSE, FALSE, 10, 30, 0, 40);
+INSERT INTO Paquete (id_ruta, nit_cliente, tarifaDeOperacion, enDestino, recolectado, libras, cuotaDestino, horas, subtotal) VALUES (5, 4444,20, FALSE, FALSE, 9, 30, 0, 39);
+INSERT INTO Paquete (id_ruta, nit_cliente, tarifaDeOperacion, enDestino, recolectado, libras, cuotaDestino, horas, subtotal, costo) VALUES (5, 1111,1, TRUE, TRUE, 9, 30, 15, 39,15);	
+INSERT INTO Paquete (id_ruta, nit_cliente, tarifaDeOperacion, enDestino, recolectado, libras, cuotaDestino, horas, subtotal, costo) VALUES (5, 1111,1, TRUE, TRUE, 9, 30, 15, 39,15);
+INSERT INTO Paquete (id_ruta, nit_cliente, tarifaDeOperacion, enDestino, recolectado, libras, cuotaDestino, horas, subtotal, costo) VALUES (5, 1111,1, TRUE, TRUE, 9, 30, 15, 39,15);
+INSERT INTO Paquete (id_ruta, nit_cliente, tarifaDeOperacion, enDestino, recolectado, libras, cuotaDestino, horas, subtotal, costo) VALUES (5, 1111,1, TRUE, TRUE, 9, 30, 15, 39,15);
+INSERT INTO Paquete (id_ruta, nit_cliente, tarifaDeOperacion, enDestino, recolectado, libras, cuotaDestino, horas, subtotal, costo) VALUES (5, 1111,1, TRUE, TRUE, 9, 30, 15, 39,15);
+INSERT INTO Paquete (id_ruta, nit_cliente, tarifaDeOperacion, enDestino, recolectado, libras, cuotaDestino, horas, subtotal, costo) VALUES (5, 1234,1, TRUE, TRUE, 10, 30, 20, 40,20);
+INSERT INTO Paquete (id_ruta, nit_cliente, tarifaDeOperacion, enDestino, recolectado, libras, cuotaDestino, horas, subtotal, costo) VALUES (5, 1234,1, TRUE, TRUE, 10, 30, 20, 40,20);
+INSERT INTO Paquete (id_ruta, nit_cliente, tarifaDeOperacion, enDestino, recolectado, libras, cuotaDestino, horas, subtotal, costo) VALUES (5, 1234,1, TRUE, TRUE, 10, 30, 20, 40,20);
+INSERT INTO Paquete (id_ruta, nit_cliente, tarifaDeOperacion, enDestino, recolectado, libras, cuotaDestino, horas, subtotal, costo) VALUES (5, 1234,1, TRUE, TRUE, 10, 30, 20, 40,20);
+INSERT INTO Paquete (id_ruta, nit_cliente, tarifaDeOperacion, enDestino, recolectado, libras, cuotaDestino, horas, subtotal, costo) VALUES (5, 1234,1, TRUE, TRUE, 10, 30, 20, 40,20);
+INSERT INTO Paquete (id_ruta, nit_cliente, tarifaDeOperacion, enDestino, recolectado, libras, cuotaDestino, horas, subtotal, costo) VALUES (1, 2222,1, TRUE, TRUE, 15, 30, 18, 45,18);
+INSERT INTO Paquete (id_ruta, nit_cliente, tarifaDeOperacion, enDestino, recolectado, libras, cuotaDestino, horas, subtotal, costo) VALUES (1, 2222,1, TRUE, TRUE, 15, 30, 18, 45,18);
+INSERT INTO Paquete (id_ruta, nit_cliente, tarifaDeOperacion, enDestino, recolectado, libras, cuotaDestino, horas, subtotal, costo) VALUES (1, 2222,1, TRUE, TRUE, 15, 30, 18, 45,18);
+INSERT INTO Paquete (id_ruta, nit_cliente, tarifaDeOperacion, enDestino, recolectado, libras, cuotaDestino, horas, subtotal, costo) VALUES (1, 2222,1, TRUE, TRUE, 15, 30, 18, 45,18);
+INSERT INTO Paquete (id_ruta, nit_cliente, tarifaDeOperacion, enDestino, recolectado, libras, cuotaDestino, horas, subtotal, costo) VALUES (1, 2222,1, TRUE, TRUE, 15, 30, 18, 45,18);
+INSERT INTO Paquete (id_ruta, nit_cliente, tarifaDeOperacion, enDestino, recolectado, libras, cuotaDestino, horas, subtotal, costo) VALUES (1, 3333,1, TRUE, TRUE, 15, 30, 18, 45,18);
+INSERT INTO Paquete (id_ruta, nit_cliente, tarifaDeOperacion, enDestino, recolectado, libras, cuotaDestino, horas, subtotal, costo) VALUES (1, 3333,1, TRUE, TRUE, 15, 30, 18, 45,18);
+INSERT INTO Paquete (id_ruta, nit_cliente, tarifaDeOperacion, enDestino, recolectado, libras, cuotaDestino, horas, subtotal, costo) VALUES (1, 3333,1, TRUE, TRUE, 15, 30, 18, 45,18);
+INSERT INTO Paquete (id_ruta, nit_cliente, tarifaDeOperacion, enDestino, recolectado, libras, cuotaDestino, horas, subtotal, costo) VALUES (1, 3333,1, TRUE, TRUE, 15, 30, 18, 45,18);
+mysql> INSERT INTO Paquete (id_ruta, nit_cliente, tarifaDeOperacion, enDestino, recolectado, libras, cuotaDestino, horas, subtotal, costo) VALUES (1, 3333,1, TRUE, TRUE, 15, 30, 18, 45,18);
+INSERT INTO Paquete (id_ruta, nit_cliente, tarifaDeOperacion, enDestino, recolectado, libras, cuotaDestino, horas, subtotal, costo) VALUES (2, 4444,1, TRUE, TRUE, 15, 30, 23, 45,23);
+INSERT INTO Paquete (id_ruta, nit_cliente, tarifaDeOperacion, enDestino, recolectado, libras, cuotaDestino, horas, subtotal, costo) VALUES (2, 4444,1, TRUE, TRUE, 15, 30, 23, 45,23);
+INSERT INTO Paquete (id_ruta, nit_cliente, tarifaDeOperacion, enDestino, recolectado, libras, cuotaDestino, horas, subtotal, costo) VALUES (2, 4444,1, TRUE, TRUE, 15, 30, 23, 45,23);
+INSERT INTO Paquete (id_ruta, nit_cliente, tarifaDeOperacion, enDestino, recolectado, libras, cuotaDestino, horas, subtotal, costo) VALUES (2, 4444,1, TRUE, TRUE, 15, 30, 23, 45,23);
+INSERT INTO Paquete (id_ruta, nit_cliente, tarifaDeOperacion, enDestino, recolectado, libras, cuotaDestino, horas, subtotal, costo) VALUES (2, 4444,1, TRUE, TRUE, 15, 30, 23, 45,23);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

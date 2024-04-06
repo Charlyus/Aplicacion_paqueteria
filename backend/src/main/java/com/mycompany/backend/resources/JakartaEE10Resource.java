@@ -1,4 +1,4 @@
-package com.mycompany.aplicacionpaqueteria.resources;
+package com.mycompany.backend.resources;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
