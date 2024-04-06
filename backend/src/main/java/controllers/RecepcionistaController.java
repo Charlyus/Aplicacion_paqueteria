@@ -5,8 +5,7 @@
 package controllers;
 
 import com.google.gson.Gson;
-import entidades.paquete;
-import entidades.ruta;
+import entidades.recepcionista;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,17 +13,17 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import services.RutaService;
+import services.RecepcionistaService;
 import util.ApiException;
 
 /**
  *
  * @author carlos
  */
-@WebServlet(name = "PaqueteController", urlPatterns = {"/Ruta/*"})
-public class RutaController extends HttpServlet {
-
-    private RutaService rutaService = new RutaService();
+@WebServlet(name = "RecepcionistaController", urlPatterns = {"/Recepcionista/*"})
+public class RecepcionistaController extends HttpServlet {
+    
+    private RecepcionistaService recepcionistaService = new RecepcionistaService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -32,10 +31,10 @@ public class RutaController extends HttpServlet {
             //Se accede a un recurso a traves de un path param
             if(req.getPathInfo() != null) {
                 String pathParam = req.getPathInfo().replace("/", "");
-                this.sendResponse(resp, rutaService.getRutaById(Integer.parseInt(pathParam)));
+                this.sendResponse(resp, recepcionistaService.getRecepcionistaById(Integer.parseInt(pathParam)));
             //Se accede a todos los recursos
             } else {
-                this.sendResponse(resp, rutaService.getRutas());
+                this.sendResponse(resp, recepcionistaService.getRecepcionistas());
             }
         } catch (ApiException e) {
             this.sendError(resp, e);
@@ -51,8 +50,8 @@ public class RutaController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             Gson gson = new Gson();
-            ruta ruta = gson.fromJson(req.getReader(), ruta.class);
-            this.sendResponse(resp, rutaService.insertRuta(ruta));
+            recepcionista recepcionista = gson.fromJson(req.getReader(), recepcionista.class);
+            this.sendResponse(resp, recepcionistaService.insertRecepcionista(recepcionista));
         } catch (ApiException e) {
             this.sendError(resp, e);
         } catch (Exception e) {
@@ -68,7 +67,7 @@ public class RutaController extends HttpServlet {
         try {
             if(req.getPathInfo() != null) {
                 String pathParam = req.getPathInfo().replace("/", "");
-                rutaService.deletePaquete(Integer.parseInt(pathParam));
+                recepcionistaService.deleteRecepcionista(Integer.parseInt(pathParam));
                 this.sendResponse(resp, "");
             } else {
                 throw ApiException.builder()
@@ -98,4 +97,5 @@ public class RutaController extends HttpServlet {
         resp.setContentType("application/json");
         resp.sendError(e.getCode(), e.getMessage());
     }
+   
 }

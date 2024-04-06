@@ -9,50 +9,18 @@ package entidades;
  *
  * @author carlos
  */
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class operador {
     private int id;
     private boolean activo;
     private String nombre;
     private String contraseña;
 
-    public operador(int id, boolean activo, String nombre, String contraseña) {
-        this.id = id;
-        this.activo = activo;
-        this.nombre = nombre;
-        this.contraseña = contraseña;
-    }
-
-    
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public boolean isActivo() {
-        return activo;
-    }
-
-    public void setActivo(boolean activo) {
-        this.activo = activo;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getContraseña() {
-        return contraseña;
-    }
-
-    public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
-    }
     
 }

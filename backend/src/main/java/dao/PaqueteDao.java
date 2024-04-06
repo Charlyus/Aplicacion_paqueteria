@@ -43,7 +43,7 @@ public class PaqueteDao {
 
     public paquete getById(int id){
         try {
-            PreparedStatement stmt = DBConnection.getInstance().getConnection().prepareStatement("SELECT * FROM animal WHERE id = ?;");
+            PreparedStatement stmt = DBConnection.getInstance().getConnection().prepareStatement("SELECT * FROM Paquete WHERE id_paquete = ?;");
             stmt.setString(1, String.valueOf(id));
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
@@ -97,7 +97,7 @@ public class PaqueteDao {
     public void updateEnDestino(int id, boolean enDestino) {
         try {
             PreparedStatement stmt = DBConnection.getInstance().getConnection().prepareStatement(
-                    "UPDATE paquete SET enDestino = ? WHERE id_paquete = ?;"
+                    "UPDATE Paquete SET enDestino = ? WHERE id_paquete = ?;"
             );
             stmt.setBoolean(1, enDestino);
             stmt.setInt(2, id);
@@ -110,7 +110,7 @@ public class PaqueteDao {
     public void updateRecolectado(int id, boolean recolectado) {
         try {
             PreparedStatement stmt = DBConnection.getInstance().getConnection().prepareStatement(
-                    "UPDATE paquete SET recolectado = ? WHERE id_paquete = ?;"
+                    "UPDATE Paquete SET recolectado = ? WHERE id_paquete = ?;"
             );
             stmt.setBoolean(1, recolectado);
             stmt.setInt(2, id);
@@ -123,7 +123,7 @@ public class PaqueteDao {
     public void updateHoras(int id, double horas) {
         try {
             PreparedStatement stmt = DBConnection.getInstance().getConnection().prepareStatement(
-                    "UPDATE paquete SET horas = ? WHERE id_paquete = ?;"
+                    "UPDATE Paquete SET horas = ? WHERE id_paquete = ?;"
             );
             stmt.setDouble(1, horas);
             stmt.setInt(2, id);
@@ -136,7 +136,7 @@ public class PaqueteDao {
     public void setCosto(int id, double costo) {
         try {
             PreparedStatement stmt = DBConnection.getInstance().getConnection().prepareStatement(
-                    "UPDATE paquete SET costo = ? WHERE id_paquete = ?;"
+                    "UPDATE Paquete SET costo = ? WHERE id_paquete = ?;"
             );
             stmt.setDouble(1, costo);
             stmt.setInt(2, id);
@@ -149,7 +149,7 @@ public class PaqueteDao {
     public void setSubTotal(int id, double subtotal) {
         try {
             PreparedStatement stmt = DBConnection.getInstance().getConnection().prepareStatement(
-                    "UPDATE paquete SET subtotal = ? WHERE id_paquete = ?;"
+                    "UPDATE Paquete SET subtotal = ? WHERE id_paquete = ?;"
             );
             stmt.setDouble(1, subtotal);
             stmt.setInt(2, id);
@@ -161,7 +161,7 @@ public class PaqueteDao {
     }
     public void delete(int id){
         try {
-            PreparedStatement stmt = DBConnection.getInstance().getConnection().prepareStatement("DELETE FROM animal WHERE id = ?;");
+            PreparedStatement stmt = DBConnection.getInstance().getConnection().prepareStatement("DELETE FROM Paquete WHERE id_paquete = ?;");
             stmt.setInt(1, id);
             stmt.execute();
         } catch (SQLException e) {

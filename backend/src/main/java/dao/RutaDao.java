@@ -18,8 +18,8 @@ import java.util.List;
  * @author carlos
  */
 public class RutaDao {
-    public List<ruta> getPaquetes(){
-        List<ruta> paquetes = new ArrayList<>();
+    public List<ruta> getRutas(){
+        List<ruta> rutas = new ArrayList<>();
         try {
             Statement statement = DBConnection.getInstance().getConnection().createStatement();
             ResultSet rs = statement.executeQuery("SELECT * FROM Ruta;");
@@ -27,39 +27,30 @@ public class RutaDao {
                 ruta ruta = new ruta();
                 ruta.setId(rs.getInt("id_ruta"));
                 ruta.setNombre(rs.getString("nombre"));
-                ruta.setIdCliente(rs.getInt("nit_cliente"));
-                ruta.setEnDestino(rs.getBoolean("enDestino"));
-                ruta.setRecolectado(rs.getBoolean("recolectado"));
-                ruta.setCuotaDestino(rs.getDouble("cuotaDestino"));
-                ruta.setTarifaOperacion(rs.getDouble("tarifaDeOperacion"));
-                ruta.setLibras(rs.getDouble("libras"));
-                ruta.setHoras(rs.getDouble("horas"));
+                ruta.setCantPuntosControl(rs.getInt("cantPuntosControl"));
+                ruta.setActivo(rs.getBoolean("activo"));
                 
-                paquetes.add(paquete);
+                
+                rutas.add(ruta);
             }
-            return paquetes;
+            return rutas;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public paquete getById(int id){
+    public ruta getById(int id){
         try {
-            PreparedStatement stmt = DBConnection.getInstance().getConnection().prepareStatement("SELECT * FROM animal WHERE id = ?;");
+            PreparedStatement stmt = DBConnection.getInstance().getConnection().prepareStatement("SELECT * FROM Ruta WHERE id_ruta = ?;");
             stmt.setString(1, String.valueOf(id));
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                paquete paquete = new paquete();
-                paquete.setId(rs.getInt("id_paquete"));
-                paquete.setIdRuta(rs.getInt("id_ruta"));
-                paquete.setIdCliente(rs.getInt("nit_cliente"));
-                paquete.setEnDestino(rs.getBoolean("enDestino"));
-                paquete.setRecolectado(rs.getBoolean("recolectado"));
-                paquete.setCuotaDestino(rs.getDouble("cuotaDestino"));
-                paquete.setTarifaOperacion(rs.getDouble("tarifaDeOperacion"));
-                paquete.setLibras(rs.getDouble("libras"));
-                paquete.setHoras(rs.getDouble("horas"));
-                return paquete;
+                ruta ruta = new ruta();
+                ruta.setId(rs.getInt("id_ruta"));
+                ruta.setNombre(rs.getString("nombre"));
+                ruta.setCantPuntosControl(rs.getInt("cantPuntosControl"));
+                ruta.setActivo(rs.getBoolean("activo"));
+                return ruta;
             }
             return null;
         } catch (SQLException e) {
@@ -67,28 +58,22 @@ public class RutaDao {
         }
     }
 
-    public paquete insert(paquete paquete){
+    public ruta insert(ruta ruta){
         try {
             
             PreparedStatement stmt = DBConnection.getInstance().getConnection().prepareStatement(
-                    "INSERT INTO Paquete (id_ruta, nit_cliente, tarifaDeOperacion, enDestino, recolectado, libras, subtotal, horas, cuotaDestino) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);",
+                    "INSERT INTO Ruta (nombre, cantPuntosControl, activo) VALUES (?, ?, ?);",
                     Statement.RETURN_GENERATED_KEYS
             );
-            stmt.setInt(1, paquete.getIdRuta());
-            stmt.setInt(2, paquete.getIdCliente());
-            stmt.setDouble(3, paquete.getTarifaOperacion());
-            stmt.setBoolean(4, paquete.isEnDestino());
-            stmt.setBoolean(5, paquete.isRecolectado());
-            stmt.setDouble(6, paquete.getLibras());
-            stmt.setDouble(7, paquete.getSubtotal());
-            stmt.setDouble(8, paquete.getHoras());
-            stmt.setDouble(9, paquete.getCuotaDestino());
+            stmt.setString(1, ruta.getNombre());
+            stmt.setInt(2, ruta.getCantPuntosControl());
+            stmt.setBoolean(3, ruta.isActivo());
             
             stmt.execute();
             ResultSet generatedKeys = stmt.getGeneratedKeys();
             if (generatedKeys.next()) {
-                paquete.setId(generatedKeys.getInt(1));
-                return paquete;
+                ruta.setId(generatedKeys.getInt(1));
+                return ruta;
             }
             return null;
         } catch (SQLException e) {
@@ -96,74 +81,25 @@ public class RutaDao {
         }
     }
 
-    public void updateEnDestino(int id, boolean enDestino) {
+    public void updateActivo(int id, boolean activo) {
         try {
             PreparedStatement stmt = DBConnection.getInstance().getConnection().prepareStatement(
-                    "UPDATE paquete SET enDestino = ? WHERE id_paquete = ?;"
+                    "UPDATE Ruta SET activo = ? WHERE id_ruta = ?;"
             );
-            stmt.setBoolean(1, enDestino);
+            stmt.setBoolean(1, activo);
             stmt.setInt(2, id);
 
             stmt.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Error al actualizar el estado del paquete", e);
+            throw new RuntimeException("Error al actualizar el estado de la ruta", e);
         }
     }
-    public void updateRecolectado(int id, boolean recolectado) {
-        try {
-            PreparedStatement stmt = DBConnection.getInstance().getConnection().prepareStatement(
-                    "UPDATE paquete SET recolectado = ? WHERE id_paquete = ?;"
-            );
-            stmt.setBoolean(1, recolectado);
-            stmt.setInt(2, id);
-
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException("Error al actualizar el estado del paquete", e);
-        }
-    }
-    public void updateHoras(int id, double horas) {
-        try {
-            PreparedStatement stmt = DBConnection.getInstance().getConnection().prepareStatement(
-                    "UPDATE paquete SET horas = ? WHERE id_paquete = ?;"
-            );
-            stmt.setDouble(1, horas);
-            stmt.setInt(2, id);
-
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException("Error al actualizar el estado del paquete", e);
-        }
-    }
-    public void setCosto(int id, double costo) {
-        try {
-            PreparedStatement stmt = DBConnection.getInstance().getConnection().prepareStatement(
-                    "UPDATE paquete SET costo = ? WHERE id_paquete = ?;"
-            );
-            stmt.setDouble(1, costo);
-            stmt.setInt(2, id);
-
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException("Error al actualizar el estado del paquete", e);
-        }
-    }
-    public void setSubTotal(int id, double subtotal) {
-        try {
-            PreparedStatement stmt = DBConnection.getInstance().getConnection().prepareStatement(
-                    "UPDATE paquete SET subtotal = ? WHERE id_paquete = ?;"
-            );
-            stmt.setDouble(1, subtotal);
-            stmt.setInt(2, id);
-
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException("Error al actualizar el estado del paquete", e);
-        }
-    }
+    
+    
+    
     public void delete(int id){
         try {
-            PreparedStatement stmt = DBConnection.getInstance().getConnection().prepareStatement("DELETE FROM animal WHERE id = ?;");
+            PreparedStatement stmt = DBConnection.getInstance().getConnection().prepareStatement("DELETE FROM Ruta WHERE id_ruta = ?;");
             stmt.setInt(1, id);
             stmt.execute();
         } catch (SQLException e) {

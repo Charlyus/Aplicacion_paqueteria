@@ -1,0 +1,28 @@
+DAO: 
+DAO(Data Access Object) es un patrón de diseño que se utiliza para abstraer y encapsular el acceso a la base de datos desde el resto de la aplicación. Su propósito principal es separar la lógica de negocio de la lógica de acceso a datos.
+
+Servlet:
+ Un servlet en Java es una clase que se utiliza para extender las capacidades de los servidores web que alojan aplicaciones web Java EE. Los servlets se utilizan para procesar solicitudes HTTP, generalmente para generar una respuesta dinámica que se envía de vuelta al cliente.
+
+servidor:
+un servidor se refiere a un programa de software o una máquina física que proporciona servicios a otros programas o dispositivos, conocidos como clientes. En el caso de las aplicaciones web, el servidor web es el componente responsable de recibir las solicitudes HTTP de los clientes (navegadores web, aplicaciones móviles, etc.) y enviar las respuestas correspondientes.
+
+Rest-Api:
+Una REST API (Interfaz de Programación de Aplicaciones, por sus siglas en inglés) es un conjunto de reglas y convenciones que se utilizan para diseñar y construir servicios web que se adhieren al estilo de arquitectura REST (Transferencia de Estado Representacional, por sus siglas en inglés). REST es un estilo de arquitectura para sistemas distribuidos que se basa en los siguientes principios:
+	Recursos
+	Operaciones sobre recursos
+	Representaciones
+	Sin estado
+
+Backend:
+el backend es la parte de una aplicación web que se ejecuta en el servidor y que maneja las solicitudes HTTP, procesa datos, realiza cálculos y se comunica con la base de datos u otros servicios. El backend está encargado de manejar la lógica de negocio y proporcionar los datos necesarios para que el frontend (la parte de la aplicación que se ejecuta en el navegador del usuario) pueda mostrar la interfaz de usuario y responder a las acciones del usuario.
+
+Frontend:
+el frontend es la parte de una aplicación web que se ejecuta en el navegador web del usuario y que proporciona la interfaz de usuario con la que interactúan los usuarios.
+El frontend está compuesto por tecnologías como HTML (HyperText Markup Language), CSS (Cascading Style Sheets) y JavaScript, que se utilizan para definir la estructura, el estilo y el comportamiento de la interfaz de usuario de una aplicación web.
+El frontend es crucial para proporcionar una experiencia de usuario atractiva y funcional en las aplicaciones web. Es la parte de la aplicación con la que los usuarios interactúan directamente, por lo que es importante que sea fácil de usar, receptiva y visualmente atractiva. Los desarrolladores de frontend trabajan en estrecha colaboración con los diseñadores de UX/UI y los desarrolladores de backend para crear aplicaciones web completas y efectivas.
+
+Base de Datos;
+Una base de datos es un sistema organizado y estructurado para almacenar y gestionar conjuntos de datos, permitiendo el almacenamiento, la manipulación y la recuperación eficientes de la información.
+
+
