@@ -27,8 +27,9 @@ public class OperadorController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        configurarCORS(resp);
         try {
-            //Se accede a un recurso a traves de un path param
+            
             if(req.getPathInfo() != null) {
                 String pathParam = req.getPathInfo().replace("/", "");
                 this.sendResponse(resp, operadorService.getOperadorById(Integer.parseInt(pathParam)));
@@ -49,6 +50,7 @@ public class OperadorController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
+            configurarCORS(resp);
             Gson gson = new Gson();
             operador operador = gson.fromJson(req.getReader(), operador.class);
             this.sendResponse(resp, operadorService.insertOperador(operador));
@@ -65,6 +67,7 @@ public class OperadorController extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
+            configurarCORS(resp);
             if(req.getPathInfo() != null) {
                 String pathParam = req.getPathInfo().replace("/", "");
                 operadorService.deleteOperador(Integer.parseInt(pathParam));
@@ -87,6 +90,7 @@ public class OperadorController extends HttpServlet {
     }
 
     private void sendResponse(HttpServletResponse resp, Object object) throws IOException {
+        
         resp.setContentType("application/json");
         resp.setStatus(HttpServletResponse.SC_OK);
         PrintWriter out = resp.getWriter();
@@ -94,8 +98,19 @@ public class OperadorController extends HttpServlet {
     }
 
     private void sendError(HttpServletResponse resp, ApiException e) throws IOException {
+        
         resp.setContentType("application/json");
         resp.sendError(e.getCode(), e.getMessage());
+    }
+    private void configurarCORS(HttpServletResponse resp) {
+        // Permite solicitudes desde cualquier origen (cambia '*' por el origen específico de tu aplicación React)
+        resp.setHeader("Access-Control-Allow-Origin", "*");
+        // Permitir solicitudes con los métodos GET, POST, etc. (ajusta según tus necesidades)
+        resp.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        // Permitir el envío de credenciales (cambiar a "true" si tu aplicación React envía cookies u otras credenciales)
+        resp.setHeader("Access-Control-Allow-Credentials", "true");
+        // Permitir los encabezados especificados (ajusta según tus necesidades)
+        resp.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     }
     
 }

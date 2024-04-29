@@ -4,6 +4,7 @@
  */
 package dao;
 
+import entidades.administrador;
 import entidades.operador;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,39 +17,37 @@ import java.util.List;
  *
  * @author carlos
  */
-public class OperadorDao {
+public class AdministradorDao {
     
-    public List<operador> getOperadores(){
-        List<operador> operadores = new ArrayList<>();
+    public List<administrador> getOperadores(){
+        List<administrador> administradores = new ArrayList<>();
         try {
             Statement statement = DBConnection.getInstance().getConnection().createStatement();
-            ResultSet rs = statement.executeQuery("SELECT * FROM Operador;");
+            ResultSet rs = statement.executeQuery("SELECT * FROM Administrador;");
             while (rs.next()) {
-                operador operador = new operador();
-                operador.setId(rs.getInt("id_operador"));
-                operador.setActivo(rs.getBoolean("activo"));
-                operador.setNombre(rs.getString("nombre"));
-                operador.setContraseña(rs.getString("contrasena"));
-                operadores.add(operador);
+                administrador administrador = new administrador();
+                administrador.setId(rs.getInt("Id_administrador"));
+                administrador.setNombre(rs.getString("nombre"));
+                administrador.setContraseña(rs.getString("contrasena"));
+                administradores.add(administrador);
             }
-            return operadores;
+            return administradores;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public operador getById(int id){
+    public administrador getById(int id){
         try {
-            PreparedStatement stmt = DBConnection.getInstance().getConnection().prepareStatement("SELECT * FROM Operador     WHERE id_operador = ?;");
+            PreparedStatement stmt = DBConnection.getInstance().getConnection().prepareStatement("SELECT * FROM Administrador     WHERE Id_administrador = ?;");
             stmt.setString(1, String.valueOf(id));
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                operador operador = new operador();
-                operador.setId(rs.getInt("id_operador"));
-                operador.setActivo(rs.getBoolean("activo"));
-                operador.setNombre(rs.getString("nombre"));
-                operador.setContraseña(rs.getString("contrasena"));
-                return operador;
+                administrador administrador = new administrador();
+                administrador.setId(rs.getInt("Id_administrador"));
+                administrador.setNombre(rs.getString("nombre"));
+                administrador.setContraseña(rs.getString("contrasena"));
+                return administrador;
             }
             return null;
         } catch (SQLException e) {
@@ -56,22 +55,21 @@ public class OperadorDao {
         }
     }
 
-    public operador insert(operador operador){
+    public administrador insert(administrador administrador){
         try {
             
             PreparedStatement stmt = DBConnection.getInstance().getConnection().prepareStatement(
-                    "INSERT INTO Operador (activo, nombre, contrasena) VALUES (?, ?, ?);",
+                    "INSERT INTO Administrador (nombre, contrasena) VALUES (?, ?);",
                     Statement.RETURN_GENERATED_KEYS
             );
-            stmt.setBoolean(1, operador.isActivo());
-            stmt.setString(2, operador.getNombre());
-            stmt.setString(3, operador.getContraseña());
+            stmt.setString(1, administrador.getNombre());
+            stmt.setString(2, administrador.getContraseña());
             
             stmt.execute();
             ResultSet generatedKeys = stmt.getGeneratedKeys();
             if (generatedKeys.next()) {
-                operador.setId(generatedKeys.getInt(1));
-                return operador;
+                administrador.setId(generatedKeys.getInt(1));
+                return administrador;
             }
             return null;
         } catch (SQLException e) {
@@ -79,23 +77,11 @@ public class OperadorDao {
         }
     }
 
-    public void updateActivo(int id, boolean activo) {
-        try {
-            PreparedStatement stmt = DBConnection.getInstance().getConnection().prepareStatement(
-                    "UPDATE Operador SET activo = ? WHERE id_operador = ?;"
-            );
-            stmt.setBoolean(1, activo);
-            stmt.setInt(2, id);
-
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException("Error al actualizar el estado del operador", e);
-        }
-    }
+    
     public void updateNombre(int id, String nombre) {
         try {
             PreparedStatement stmt = DBConnection.getInstance().getConnection().prepareStatement(
-                    "UPDATE Operador SET nombre = ? WHERE id_operador = ?;"
+                    "UPDATE Administrador SET nombre = ? WHERE Id_administrador = ?;"
             );
             stmt.setString(1, nombre);
             stmt.setInt(2, id);
@@ -109,7 +95,7 @@ public class OperadorDao {
     public void updateContraseña(int id, String contraseña) {
         try {
             PreparedStatement stmt = DBConnection.getInstance().getConnection().prepareStatement(
-                    "UPDATE Operador SET contrasena = ? WHERE id_operador = ?;"
+                    "UPDATE Administrador SET contrasena = ? WHERE Id_administrador = ?;"
             );
             stmt.setString(1, contraseña);
             stmt.setInt(2, id);
@@ -122,7 +108,7 @@ public class OperadorDao {
     
     public void delete(int id){
         try {
-            PreparedStatement stmt = DBConnection.getInstance().getConnection().prepareStatement("DELETE FROM Operador WHERE id_operador = ?;");
+            PreparedStatement stmt = DBConnection.getInstance().getConnection().prepareStatement("DELETE FROM Administrador WHERE Id_administrador = ?;");
             stmt.setInt(1, id);
             stmt.execute();
         } catch (SQLException e) {

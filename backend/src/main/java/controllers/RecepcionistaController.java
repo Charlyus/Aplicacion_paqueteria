@@ -27,6 +27,7 @@ public class RecepcionistaController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        configurarCORS(resp);
         try {
             //Se accede a un recurso a traves de un path param
             if(req.getPathInfo() != null) {
@@ -48,6 +49,7 @@ public class RecepcionistaController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        configurarCORS(resp);
         try {
             Gson gson = new Gson();
             recepcionista recepcionista = gson.fromJson(req.getReader(), recepcionista.class);
@@ -64,6 +66,7 @@ public class RecepcionistaController extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        configurarCORS(resp);
         try {
             if(req.getPathInfo() != null) {
                 String pathParam = req.getPathInfo().replace("/", "");
@@ -97,5 +100,16 @@ public class RecepcionistaController extends HttpServlet {
         resp.setContentType("application/json");
         resp.sendError(e.getCode(), e.getMessage());
     }
+    private void configurarCORS(HttpServletResponse resp) {
+        // Permite solicitudes desde cualquier origen (cambia '*' por el origen específico de tu aplicación React)
+        resp.setHeader("Access-Control-Allow-Origin", "*");
+        // Permitir solicitudes con los métodos GET, POST, etc. (ajusta según tus necesidades)
+        resp.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        // Permitir el envío de credenciales (cambiar a "true" si tu aplicación React envía cookies u otras credenciales)
+        resp.setHeader("Access-Control-Allow-Credentials", "true");
+        // Permitir los encabezados especificados (ajusta según tus necesidades)
+        resp.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    }
+    
    
 }

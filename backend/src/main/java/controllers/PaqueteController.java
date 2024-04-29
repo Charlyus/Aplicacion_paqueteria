@@ -19,7 +19,7 @@ import util.ApiException;
 /**
  *
  * @author carlos
- */
+ */ 
 @WebServlet(name = "PaqueteController", urlPatterns = {"/Paquete/*"})
 public class PaqueteController extends HttpServlet {
 
@@ -27,14 +27,18 @@ public class PaqueteController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("aver");
         try {
             //Se accede a un recurso a traves de un path param
             if(req.getPathInfo() != null) {
+                System.out.println("uno");
                 String pathParam = req.getPathInfo().replace("/", "");
+                System.out.println("dos");
                 this.sendResponse(resp, paqueteService.getPaqueteById(Integer.parseInt(pathParam)));
+                System.out.println("tres");
             //Se accede a todos los recursos
             } else {
-                this.sendResponse(resp, paqueteService.getAnimals());
+                this.sendResponse(resp, paqueteService.getPaquetes());
             }
         } catch (ApiException e) {
             this.sendError(resp, e);
@@ -85,7 +89,44 @@ public class PaqueteController extends HttpServlet {
         }
 
     }
-
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException{
+        System.out.println("actualizandooo");
+        try {
+            Gson gson = new Gson();
+            paquete paquete = gson.fromJson(req.getReader(), paquete.class);
+            this.sendResponse(resp, paqueteService.insertPaquete(paquete));
+        } catch (ApiException e) {
+            this.sendError(resp, e);
+        } catch (Exception e) {
+            this.sendError(resp, ApiException.builder()
+                    .code(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
+                    .message(e.getMessage())
+                    .build());
+        }
+    }
+    protected void enDestino(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        
+        try {
+            //Se accede a un recurso a traves de un path param
+            if(req.getPathInfo() != null) {
+                String pathParam = req.getPathInfo().replace("/", "");
+                System.out.println("dos");
+                this.sendResponse(resp, paqueteService.getPaqueteById(Integer.parseInt(pathParam)));
+                System.out.println("tres");
+            //Se accede a todos los recursos
+            } else {
+                this.sendResponse(resp, paqueteService.getPaquetesEnDestino());
+            }
+        } catch (ApiException e) {
+            this.sendError(resp, e);
+        } catch (Exception e) {
+            this.sendError(resp, ApiException.builder()
+                    .code(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
+                    .message(e.getMessage())
+                    .build());
+        }
+    }
     private void sendResponse(HttpServletResponse resp, Object object) throws IOException {
         resp.setContentType("application/json");
         resp.setStatus(HttpServletResponse.SC_OK);

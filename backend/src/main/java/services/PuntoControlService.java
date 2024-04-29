@@ -47,9 +47,11 @@ public class PuntoControlService {
 
     
     
-    public void updateCantidadCola(int id, int cantidadCola) {
-        
+    public puntoDeControl updateCantidadCola(puntoDeControl puntoDeControl) {
+        int id = puntoDeControl.getId();
+        int cantidadCola=puntoDeControl.getCantidadCola();
          puntoControlDao.updateCantidadCola(id, cantidadCola);
+         return puntoDeControl;
     }
     public void updateCuotaDestino(int id, int cuotaDestino) {
         

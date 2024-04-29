@@ -25,6 +25,7 @@ public class RecepcionistaDao {
             ResultSet rs = statement.executeQuery("SELECT * FROM Recepcionista;");
             while (rs.next()) {
                 recepcionista recepcionista = new recepcionista();
+                recepcionista.setId(rs.getInt("id_recepcionista"));
                 recepcionista.setActivo(rs.getBoolean("activo"));
                 recepcionista.setNombre(rs.getString("nombre"));
                 recepcionista.setContraseña(rs.getString("contrasena"));
@@ -35,7 +36,7 @@ public class RecepcionistaDao {
             throw new RuntimeException(e);
         }
     }
-
+    
     public recepcionista getById(int id){
         try {
             PreparedStatement stmt = DBConnection.getInstance().getConnection().prepareStatement("SELECT * FROM Recepcionista WHERE id_recepcionista = ?;");
@@ -43,6 +44,7 @@ public class RecepcionistaDao {
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 recepcionista recepcionista = new recepcionista();
+                recepcionista.setId(rs.getInt("id_recepcionista"));
                 recepcionista.setActivo(rs.getBoolean("activo"));
                 recepcionista.setNombre(rs.getString("nombre"));
                 recepcionista.setContraseña(rs.getString("contrasena"));

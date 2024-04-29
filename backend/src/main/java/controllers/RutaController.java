@@ -21,7 +21,7 @@ import util.ApiException;
  *
  * @author carlos
  */
-@WebServlet(name = "PaqueteController", urlPatterns = {"/Ruta/*"})
+@WebServlet(name = "RutaController", urlPatterns = {"/Ruta/*"})
 public class RutaController extends HttpServlet {
 
     private RutaService rutaService = new RutaService();
@@ -86,6 +86,7 @@ public class RutaController extends HttpServlet {
         }
 
     }
+    
 
     private void sendResponse(HttpServletResponse resp, Object object) throws IOException {
         resp.setContentType("application/json");

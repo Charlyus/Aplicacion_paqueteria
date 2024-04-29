@@ -40,7 +40,30 @@ public class PaqueteDao {
             throw new RuntimeException(e);
         }
     }
-
+    public List<paquete> getPaquetesEnDestino(){
+        List<paquete> paquetes = new ArrayList<>();
+        try {
+            Statement statement = DBConnection.getInstance().getConnection().createStatement();
+            ResultSet rs = statement.executeQuery("SELECT * FROM Paquete WHERE enDestino=False AND recolectado=False;");
+            while (rs.next()) {
+                paquete paquete = new paquete();
+                paquete.setId(rs.getInt("id_paquete"));
+                paquete.setIdRuta(rs.getInt("id_ruta"));
+                paquete.setIdCliente(rs.getInt("nit_cliente"));
+                paquete.setEnDestino(rs.getBoolean("enDestino"));
+                paquete.setRecolectado(rs.getBoolean("recolectado"));
+                paquete.setCuotaDestino(rs.getDouble("cuotaDestino"));
+                paquete.setTarifaOperacion(rs.getDouble("tarifaDeOperacion"));
+                paquete.setLibras(rs.getDouble("libras"));
+                paquete.setHoras(rs.getDouble("horas"));
+                
+                paquetes.add(paquete);
+            }
+            return paquetes;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public paquete getById(int id){
         try {
             PreparedStatement stmt = DBConnection.getInstance().getConnection().prepareStatement("SELECT * FROM Paquete WHERE id_paquete = ?;");

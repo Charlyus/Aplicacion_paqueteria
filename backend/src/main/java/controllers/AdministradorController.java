@@ -5,26 +5,27 @@
 package controllers;
 
 import com.google.gson.Gson;
-import entidades.paquete;
-import entidades.puntoDeControl;
-import java.io.IOException;
-import java.io.PrintWriter;
+import entidades.administrador;
+import entidades.operador;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import services.PuntoControlService;
+import java.io.IOException;
+import java.io.PrintWriter;
+import services.AdministradorService;
+import services.OperadorService;
 import util.ApiException;
 
 /**
  *
  * @author carlos
  */
-@WebServlet(name = "PuntoControlController", urlPatterns = {"/PuntoControl/*"})
-public class PuntoControlController extends HttpServlet {
-
-    private PuntoControlService puntoControlService = new PuntoControlService();
+@WebServlet(name = "AdmnistradorController", urlPatterns = {"/Administrador/*"})
+public class AdministradorController extends HttpServlet {
+    
+    private AdministradorService administradorService = new AdministradorService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -32,12 +33,10 @@ public class PuntoControlController extends HttpServlet {
             //Se accede a un recurso a traves de un path param
             if(req.getPathInfo() != null) {
                 String pathParam = req.getPathInfo().replace("/", "");
-                System.out.println("good");
-                this.sendResponse(resp, puntoControlService.getPuntoDeControlById(Integer.parseInt(pathParam)));
-                
+                this.sendResponse(resp, administradorService.getOperadorById(Integer.parseInt(pathParam)));
             //Se accede a todos los recursos
             } else {
-                this.sendResponse(resp, puntoControlService.getPuntosDeControl());
+                this.sendResponse(resp, administradorService.getOperadores());
             }
         } catch (ApiException e) {
             this.sendError(resp, e);
@@ -53,8 +52,8 @@ public class PuntoControlController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             Gson gson = new Gson();
-            puntoDeControl puntoDeControl = gson.fromJson(req.getReader(), puntoDeControl.class);
-            this.sendResponse(resp, puntoControlService.insertPuntoControl(puntoDeControl));
+            administrador administrador = gson.fromJson(req.getReader(), administrador.class);
+            this.sendResponse(resp, administradorService.insertOperador(administrador));
         } catch (ApiException e) {
             this.sendError(resp, e);
         } catch (Exception e) {
@@ -70,7 +69,7 @@ public class PuntoControlController extends HttpServlet {
         try {
             if(req.getPathInfo() != null) {
                 String pathParam = req.getPathInfo().replace("/", "");
-                puntoControlService.deletePuntoControl(Integer.parseInt(pathParam));
+                administradorService.deleteOperador(Integer.parseInt(pathParam));
                 this.sendResponse(resp, "");
             } else {
                 throw ApiException.builder()
@@ -88,28 +87,13 @@ public class PuntoControlController extends HttpServlet {
         }
 
     }
-    @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException{
-        System.out.println("actualizandooo");
-        try {
-            Gson gson = new Gson();
-            puntoDeControl puntoDeControl = gson.fromJson(req.getReader(), puntoDeControl.class);
-            this.sendResponse(resp, puntoControlService.insertPuntoControl(puntoDeControl));
-        } catch (ApiException e) {
-            this.sendError(resp, e);
-        } catch (Exception e) {
-            this.sendError(resp, ApiException.builder()
-                    .code(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
-                    .message(e.getMessage())
-                    .build());
-        }
-    }
 
     private void sendResponse(HttpServletResponse resp, Object object) throws IOException {
         resp.setContentType("application/json");
         resp.setStatus(HttpServletResponse.SC_OK);
         PrintWriter out = resp.getWriter();
         out.println(new Gson().toJson(object));
+        
     }
 
     private void sendError(HttpServletResponse resp, ApiException e) throws IOException {

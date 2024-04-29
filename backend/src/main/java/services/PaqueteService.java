@@ -17,10 +17,12 @@ import dao.PaqueteDao;
 public class PaqueteService {
     private PaqueteDao paqueteDao = new PaqueteDao();
 
-    public List<paquete> getAnimals() {
+    public List<paquete> getPaquetes() {
         return paqueteDao.getPaquetes();
     }
-
+    public List<paquete> getPaquetesEnDestino() {
+        return paqueteDao.getPaquetesEnDestino();
+    }
     public paquete getPaqueteById(Integer id) throws ApiException{
         if( id == null ) {
             throw ApiException.builder()
