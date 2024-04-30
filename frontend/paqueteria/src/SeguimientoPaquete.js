@@ -23,7 +23,7 @@ class App extends Component {
     }
     
     peticionGet=()=>{
-    axios.get(url+"/"+this.state.form.id).then(response=>{
+    axios.get(url+"/"+this.state.form.idPaquete).then(response=>{
       this.setState({data: response.data});
       console.log(response.data);
     }).catch(error=>{
@@ -95,34 +95,24 @@ class App extends Component {
         <div className="App">
         <br /><br /><br />
         <label htmlFor="idPaquete">idPaquete</label>
-                        <input className="form-control" type="text" name="idPaquete" id="idPaquete" readOnly onChange={this.handleChange} value={form?form.id: this.state.data.length+1}/>
-                        <br />
+      <input className="form-control" type="text" name="idPaquete" id="idPaquete"  onChange={this.handleChange} value={form?form.idPaquete: this.state.data.length+1}/>
       <button className="btn btn-success" onClick={()=>this.peticionGet()}>localizar paquete</button>
-
+      
+                       
       <br /><br />
         <table className="table ">
           <thead>
             <tr>
-              <th>ID</th>
-              <th>Ruta</th>
-              <th>punto De control</th>
+             
             </tr>
           </thead>
           <tbody>
-            {this.state.data.map(empresa=>{
-              return(
-                <tr>
-              <td>{empresa.idPaquete}</td>
-              <td>{empresa.idRuta}</td>
-              <td>{empresa.idPuntoControl}</td>
-              <td>
-                    <button className="btn btn-primary" onClick={()=>{this.seleccionarEmpresa(empresa); this.modalInsertar()}}><FontAwesomeIcon icon={faEdit}/></button>
-                    {"   "}
-                    <button className="btn btn-danger" onClick={()=>{this.seleccionarEmpresa(empresa); this.setState({modalEliminar: true})}}><FontAwesomeIcon icon={faTrashAlt}/></button>
-                    </td>
-              </tr>
-              )
-            })}
+          {Object.keys(this.state.data).map(key => (
+        <tr key={key}>
+          <td>{key}</td>
+          <td>{this.state.data[key]}</td>
+        </tr>
+      ))}
           </tbody>
         </table>
     

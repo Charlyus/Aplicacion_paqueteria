@@ -94,14 +94,14 @@ class App extends Component {
       return (
         <div className="App">
         <br /><br /><br />
-      <button className="btn btn-success" onClick={()=>{this.setState({form: null, tipoModal: 'insertar'}); this.modalInsertar()}}>Agregar Operador</button>
+      <button className="btn btn-success" onClick={()=>{this.setState({form: null, tipoModal: 'insertar'}); this.modalInsertar()}}>Agregar Recepcionista</button>
       <br /><br />
         <table className="table ">
           <thead>
             <tr>
               <th>ID</th>
               <th>Nombre</th>
-              <th>Activo</th>
+              <th>Activo</th>s
               <th>Acciones</th>
             </tr>
           </thead>
