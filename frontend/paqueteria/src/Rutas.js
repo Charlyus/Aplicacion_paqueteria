@@ -7,28 +7,18 @@ import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
-const url="http://localhost:8080/backend/Paquete";
+const url="http://localhost:8080/backend/Ruta";
 
 class App extends Component {
     state={
       data:[],
       modalInsertar: false,
       modalEliminar: false,
-      actual:0,
-      saliente:0,
       form:{
         id: '',
-        libras: '',
-        contraseña: '',
-        cuotaDestino: '',
-        idRuta: '',
-        idCliente: '',
-        tarifaOperacion: '',
-        enDestino: '',
-        recolectado: '',
-        subtotal: '',
-        horas: '',
-        costo: '',
+        nombre: '',
+        cantPuntosControl: '',
+        activo: '',
         tipoModal: ''
       }
     }
@@ -36,7 +26,6 @@ class App extends Component {
     peticionGet=()=>{
     axios.get(url).then(response=>{
       this.setState({data: response.data});
-      this.actualizarVariables();
     }).catch(error=>{
       console.log(error.message);
     })
@@ -97,21 +86,6 @@ class App extends Component {
     
       componentDidMount() {
         this.peticionGet();
-        
-      }
-      actualizarVariables = () => {
-        let actual = 0;
-        let saliente = 0;
-      
-        this.state.data.forEach(empresa => {
-          if (empresa.enDestino) {
-            saliente++;
-          } else {
-            actual++;
-          }
-        });
-      
-        this.setState({ actual, saliente });
       }
       
     
@@ -120,37 +94,36 @@ class App extends Component {
       return (
         <div className="App">
         <br /><br /><br />
-            <br /><br />
+      <button className="btn btn-success" onClick={()=>{this.setState({form: null, tipoModal: 'insertar'}); this.modalInsertar()}}>Agregar Ruta</button>
+      <br /><br />
         <table className="table ">
           <thead>
-          <tr>
-              <th>id</th>
-              <th>Ruta</th>
-              <th>cliente</th>
-              <th>ya en destino</th>
-              <th>recolectado</th>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Cantidad de puntos de control</th>
+              <th>Activo</th>
+              <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
             {this.state.data.map(empresa=>{
-              
               return(
                 <tr>
               <td>{empresa.id}</td>
-              <td>{empresa.idRuta}</td>
-              <td>{empresa.idCliente}</td>
-              <td>{empresa.enDestino? 'ya en destino' : 'en ruta'}</td>
-              <td>{empresa.recolectado? 'ya recolectado' : 'no recolectado'}</td>
-              
+              <td>{empresa.nombre}</td>
+              <td>{empresa.cantPuntosControl}</td>
+              <td>{empresa.activo? 'ruta activa' : 'ruta inactiva'}</td>
+              <td>
+                    <button className="btn btn-primary" onClick={()=>{this.seleccionarEmpresa(empresa); this.modalInsertar()}}><FontAwesomeIcon icon={faEdit}/></button>
+                    {"   "}
+                    <button className="btn btn-danger" onClick={()=>{this.seleccionarEmpresa(empresa); this.setState({modalEliminar: true})}}><FontAwesomeIcon icon={faTrashAlt}/></button>
+                    </td>
               </tr>
               )
             })}
           </tbody>
         </table>
-        <div>
-        <p>paquetes en ruta actualmente: {this.state.actual}</p>
-        <p>paquetes fuera de ruta: {this.state.saliente}</p>
-      </div>
     
     
     

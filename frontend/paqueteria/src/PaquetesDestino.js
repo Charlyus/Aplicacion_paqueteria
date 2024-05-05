@@ -7,15 +7,13 @@ import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
-const url="http://localhost:8080/backend/Paquete";
+const url="http://localhost:8080/backend/PaqueteDestino";
 
 class App extends Component {
     state={
       data:[],
       modalInsertar: false,
       modalEliminar: false,
-      actual:0,
-      saliente:0,
       form:{
         id: '',
         libras: '',
@@ -29,14 +27,13 @@ class App extends Component {
         subtotal: '',
         horas: '',
         costo: '',
-        tipoModal: ''
+        
       }
     }
     
     peticionGet=()=>{
     axios.get(url).then(response=>{
       this.setState({data: response.data});
-      this.actualizarVariables();
     }).catch(error=>{
       console.log(error.message);
     })
@@ -97,21 +94,6 @@ class App extends Component {
     
       componentDidMount() {
         this.peticionGet();
-        
-      }
-      actualizarVariables = () => {
-        let actual = 0;
-        let saliente = 0;
-      
-        this.state.data.forEach(empresa => {
-          if (empresa.enDestino) {
-            saliente++;
-          } else {
-            actual++;
-          }
-        });
-      
-        this.setState({ actual, saliente });
       }
       
     
@@ -120,37 +102,37 @@ class App extends Component {
       return (
         <div className="App">
         <br /><br /><br />
-            <br /><br />
+      <br /><br />
         <table className="table ">
           <thead>
-          <tr>
+            <tr>
               <th>id</th>
+              <th>libras</th>
+              <th>cuotaDestino</th>
               <th>Ruta</th>
               <th>cliente</th>
+              <th>tarifa</th>
               <th>ya en destino</th>
               <th>recolectado</th>
             </tr>
           </thead>
           <tbody>
             {this.state.data.map(empresa=>{
-              
               return(
                 <tr>
               <td>{empresa.id}</td>
+              <td>{empresa.libras}</td>
+              <td>{empresa.cuotaDestino}</td>
               <td>{empresa.idRuta}</td>
               <td>{empresa.idCliente}</td>
+              <td>{empresa.tarifaOperacion}</td>
               <td>{empresa.enDestino? 'ya en destino' : 'en ruta'}</td>
               <td>{empresa.recolectado? 'ya recolectado' : 'no recolectado'}</td>
-              
               </tr>
               )
             })}
           </tbody>
         </table>
-        <div>
-        <p>paquetes en ruta actualmente: {this.state.actual}</p>
-        <p>paquetes fuera de ruta: {this.state.saliente}</p>
-      </div>
     
     
     

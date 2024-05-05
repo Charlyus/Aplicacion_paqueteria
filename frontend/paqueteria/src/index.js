@@ -6,6 +6,7 @@ import Recepcionistas from './Recepcionistas';
 import SeguimientoPaquete from './SeguimientoPaquete';
 import Paquetes from './Paquetes';
 import Principal from './Principal';
+import Login from './Login';
 
 ReactDOM.render(
   <React.StrictMode>

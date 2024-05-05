@@ -44,7 +44,7 @@ public class PaqueteDao {
         List<paquete> paquetes = new ArrayList<>();
         try {
             Statement statement = DBConnection.getInstance().getConnection().createStatement();
-            ResultSet rs = statement.executeQuery("SELECT * FROM Paquete WHERE enDestino=False AND recolectado=False;");
+            ResultSet rs = statement.executeQuery("SELECT * FROM Paquete WHERE enDestino=True AND recolectado=FALSE;");
             while (rs.next()) {
                 paquete paquete = new paquete();
                 paquete.setId(rs.getInt("id_paquete"));

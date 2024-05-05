@@ -16,7 +16,10 @@ import dao.PaqueteDao;
  */
 public class PaqueteService {
     private PaqueteDao paqueteDao = new PaqueteDao();
-
+    
+    public List<paquete> getPaquetesDestino() {
+        return paqueteDao.getPaquetesEnDestino();
+    }
     public List<paquete> getPaquetes() {
         return paqueteDao.getPaquetes();
     }

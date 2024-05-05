@@ -7,7 +7,7 @@ import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
-const url="http://localhost:8080/backend/Paquete";
+const url="http://localhost:8080/backend/ReporteRuta";
 
 class App extends Component {
     state={
@@ -18,17 +18,8 @@ class App extends Component {
       saliente:0,
       form:{
         id: '',
-        libras: '',
-        contraseña: '',
-        cuotaDestino: '',
-        idRuta: '',
-        idCliente: '',
-        tarifaOperacion: '',
-        enDestino: '',
-        recolectado: '',
-        subtotal: '',
-        horas: '',
-        costo: '',
+        nombre: '',
+        cantidad: '',
         tipoModal: ''
       }
     }
@@ -123,12 +114,11 @@ class App extends Component {
             <br /><br />
         <table className="table ">
           <thead>
+          <th>rutas mas populares</th>
           <tr>
-              <th>id</th>
-              <th>Ruta</th>
-              <th>cliente</th>
-              <th>ya en destino</th>
-              <th>recolectado</th>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Cantidad de paquetes</th>
             </tr>
           </thead>
           <tbody>
@@ -137,23 +127,15 @@ class App extends Component {
               return(
                 <tr>
               <td>{empresa.id}</td>
-              <td>{empresa.idRuta}</td>
-              <td>{empresa.idCliente}</td>
-              <td>{empresa.enDestino? 'ya en destino' : 'en ruta'}</td>
-              <td>{empresa.recolectado? 'ya recolectado' : 'no recolectado'}</td>
-              
+              <td>{empresa.nombre}</td>
+              <td>{empresa.cantidad}</td>
+    
               </tr>
               )
             })}
           </tbody>
         </table>
-        <div>
-        <p>paquetes en ruta actualmente: {this.state.actual}</p>
-        <p>paquetes fuera de ruta: {this.state.saliente}</p>
-      </div>
-    
-    
-    
+        
         <Modal isOpen={this.state.modalInsertar}>
                     <ModalHeader style={{display: 'block'}}>
                       <span style={{float: 'right'}} onClick={()=>this.modalInsertar()}>x</span>

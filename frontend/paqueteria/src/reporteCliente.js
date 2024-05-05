@@ -7,7 +7,7 @@ import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
-const url="http://localhost:8080/backend/Paquete";
+const url="http://localhost:8080/backend/ReporteCliente";
 
 class App extends Component {
     state={
@@ -17,18 +17,12 @@ class App extends Component {
       actual:0,
       saliente:0,
       form:{
-        id: '',
-        libras: '',
-        contraseña: '',
-        cuotaDestino: '',
-        idRuta: '',
-        idCliente: '',
-        tarifaOperacion: '',
-        enDestino: '',
-        recolectado: '',
-        subtotal: '',
-        horas: '',
+        nit: '',
+        nombre: '',
+        cantidad: '',
         costo: '',
+        intreso: '',
+        ganancia: '',
         tipoModal: ''
       }
     }
@@ -124,11 +118,12 @@ class App extends Component {
         <table className="table ">
           <thead>
           <tr>
-              <th>id</th>
-              <th>Ruta</th>
-              <th>cliente</th>
-              <th>ya en destino</th>
-              <th>recolectado</th>
+              <th>Nit</th>
+              <th>Nombre</th>
+              <th>Cantidad de paquetes</th>
+              <th>costos totales</th>
+              <th>ingresos totales</th>
+              <th>ganancias totales</th>
             </tr>
           </thead>
           <tbody>
@@ -136,24 +131,18 @@ class App extends Component {
               
               return(
                 <tr>
-              <td>{empresa.id}</td>
-              <td>{empresa.idRuta}</td>
-              <td>{empresa.idCliente}</td>
-              <td>{empresa.enDestino? 'ya en destino' : 'en ruta'}</td>
-              <td>{empresa.recolectado? 'ya recolectado' : 'no recolectado'}</td>
-              
+              <td>{empresa.nit}</td>
+              <td>{empresa.nombre}</td>
+              <td>{empresa.cantidad}</td>
+              <td>{"Q"+empresa.costo}</td>
+              <td>{"Q"+empresa.intreso}</td>
+              <td>{"Q"+empresa.ganancia}</td>
               </tr>
               )
             })}
           </tbody>
         </table>
-        <div>
-        <p>paquetes en ruta actualmente: {this.state.actual}</p>
-        <p>paquetes fuera de ruta: {this.state.saliente}</p>
-      </div>
-    
-    
-    
+        
         <Modal isOpen={this.state.modalInsertar}>
                     <ModalHeader style={{display: 'block'}}>
                       <span style={{float: 'right'}} onClick={()=>this.modalInsertar()}>x</span>

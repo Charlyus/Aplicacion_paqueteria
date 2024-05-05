@@ -20,8 +20,8 @@ import util.ApiException;
  *
  * @author carlos
  */ 
-@WebServlet(name = "PaqueteController", urlPatterns = {"/Paquete/*"})
-public class PaqueteController extends HttpServlet {
+@WebServlet(name = "PaqueteControllerDestino", urlPatterns = {"/PaqueteDestino/*"})
+public class PaqueteDestinoController extends HttpServlet {
 
     private PaqueteService paqueteService = new PaqueteService();
 
@@ -33,10 +33,15 @@ public class PaqueteController extends HttpServlet {
             //Se accede a un recurso a traves de un path param
             if(req.getPathInfo() != null) {
                 String pathParam = req.getPathInfo().replace("/", "");
-                this.sendResponse(resp, paqueteService.getPaqueteById(Integer.parseInt(pathParam)));
+                if (pathParam.equals("Destino")) {
+                    enDestino(req,resp);
+                }else{
+                    this.sendResponse(resp, paqueteService.getPaqueteById(Integer.parseInt(pathParam)));
+                }
+                
             //Se accede a todos los recursos
             } else {
-                this.sendResponse(resp, paqueteService.getPaquetes());
+                this.sendResponse(resp, paqueteService.getPaquetesDestino());
             }
         } catch (ApiException e) {
             this.sendError(resp, e);

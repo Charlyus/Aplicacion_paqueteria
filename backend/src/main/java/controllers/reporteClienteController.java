@@ -15,16 +15,17 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import services.RutaService;
+import services.reporteClienteService;
 import util.ApiException;
 
 /**
  *
  * @author carlos
  */
-@WebServlet(name = "RutaController", urlPatterns = {"/Ruta/*"})
-public class RutaController extends HttpServlet {
+@WebServlet(name = "reporteClienteController", urlPatterns = {"/ReporteCliente/*"})
+public class reporteClienteController extends HttpServlet {
 
-    private RutaService rutaService = new RutaService();
+    private reporteClienteService rutaService = new reporteClienteService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -48,45 +49,9 @@ public class RutaController extends HttpServlet {
         }
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
-            Gson gson = new Gson();
-            ruta ruta = gson.fromJson(req.getReader(), ruta.class);
-            this.sendResponse(resp, rutaService.insertRuta(ruta));
-        } catch (ApiException e) {
-            this.sendError(resp, e);
-        } catch (Exception e) {
-            this.sendError(resp, ApiException.builder()
-                    .code(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
-                    .message(e.getMessage())
-                    .build());
-        }
-    }
+    
 
-    @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
-            if(req.getPathInfo() != null) {
-                String pathParam = req.getPathInfo().replace("/", "");
-                rutaService.deletePaquete(Integer.parseInt(pathParam));
-                this.sendResponse(resp, "");
-            } else {
-                throw ApiException.builder()
-                        .code(HttpServletResponse.SC_BAD_REQUEST)
-                        .message("Id is required")
-                        .build();
-            }
-        } catch (ApiException e) {
-            this.sendError(resp, e);
-        } catch (Exception e) {
-            this.sendError(resp, ApiException.builder()
-                    .code(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
-                    .message(e.getMessage())
-                    .build());
-        }
-
-    }
+   
     
 
     private void sendResponse(HttpServletResponse resp, Object object) throws IOException {
